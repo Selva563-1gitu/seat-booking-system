@@ -1,0 +1,39 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.domain{
+    padding: 40px;
+    margin:20px 20px 70px 20px;
+    font-size: 30px;
+    list-style: none;
+    border: black 2px solid;
+}
+.nextbutton{
+    background-color: var(--primary-background-color);
+    padding: 20px;
+    font-size: 24px;
+    border-radius: 25px;
+    width: 100%;
+    
+}
+.selected{
+    border:green 2px solid;
+}
+.splitter {
+    margin: 5px;
+    display: grid;
+    grid-template-columns: 200px 300px;
+    input {
+      padding: 5px;
+      font-size: 24px;
+    }
+    select {
+      font-size: 24px;
+    }
+    font-size: 24px;
+}

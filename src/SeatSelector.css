@@ -1,0 +1,38 @@
+.seat-input{
+  position: relative;
+}
+.seat-row {
+  /* position: absolute; */
+    display: grid;
+    grid-template-columns: repeat(13, 40px);
+    /* gap: 10px; */
+    padding: 5px;
+    height: fit-content;
+  }
+  
+  .seat {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+   
+  }
+  
+  .available {
+    background-color: rgba(255,255,255,0.5);
+    color: black;
+  }
+  
+  .selected {
+    background-color: green;
+    color: white;
+  }
+  
+  .booked {
+    background-color: red;
+    color: white;
+    cursor: not-allowed;
+  }
+  
