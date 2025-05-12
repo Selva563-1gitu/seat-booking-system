@@ -8,7 +8,7 @@ const customerRoute=require('./routes/customer');
 dotenv.config(); // Load .env variables
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -22,6 +22,9 @@ mongoose.connect(process.env.MONGO_URI)
 // Routes
 app.use(nearbyRestaurantsRoute);
 app.use(customerRoute);
+const adminRoutes = require("./routes/admin");
+app.use(adminRoutes);
+
 
 // Root endpoint
 app.get('/', (req, res) => {

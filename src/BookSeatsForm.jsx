@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./BookSeatsForm.css";
-import SeatSelector from "./SeatSelector";
+import SeatSelector from "./components/SeatSelector";
 function SeatsShowing() {
   const CustomerTableUrl = "http://localhost:1234/customertable";
   const TimingTableUrl = "http://localhost:1234/timingtable";

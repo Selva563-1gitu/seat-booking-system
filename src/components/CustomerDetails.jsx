@@ -1,118 +1,88 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRestaurant } from "../contexts/RestaurantProvider";
 import { useCustomerDetail } from "../contexts/CustomerProvider";
 
 function CustomerDetails() {
-  const navigate=useNavigate();
-  const {cusName, setCusName} = useCustomerDetail();
-  const {gender, setGender} = useCustomerDetail();
-  const {age, setAge} = useCustomerDetail();
-  const {mobile, setMobile} = useCustomerDetail();
-  const {selectedRestaurant,selectedTimeSlot,noOfSeats}=useRestaurant();
+  const navigate = useNavigate();
+  const {
+    cusName, setCusName,
+    gender, setGender,
+    age, setAge,
+    mobile, setMobile,
+    email, setEmail
+  } = useCustomerDetail();
+
+  const { selectedRestaurant, selectedTimeSlot, selectedSeats, bookingDate } = useRestaurant();
+
   return (
     <div className="container">
-        <div style={{display:"flex",flexDirection:"column"}}>
-            <div className="splitter"><label>Restaurant </label><>{selectedRestaurant.name}</></div>
-            <div className="splitter"><label>Time Slot </label><>{selectedTimeSlot.time}</></div>
-            <div className="splitter"><label>No. Of Seats </label><>{noOfSeats}</></div>
-            
-        </div>
-      <h2 style={{ fontSize: "80px" }}>Enter Your Details...</h2>
-      <form style={{width:"100%",fontSize:"24px",display:"flex",flexDirection:"column",alignItems:"center",marginBottom:"40px"}}>
-        <div className="splitter">
-          <label htmlFor="">Customer Name:</label>
-          <input
-            type="text"
-            name="cus_name"
-            value={cusName}
-            onChange={(e) => {
-              setCusName(e.target.value);
-            }}
-        
-          />
-        </div>
-        <div className="splitter">
-          <label htmlFor="">Gender:</label>
-          <div>
-            <input
-              type="radio"
-              name="gender"
-              value="male"
-              checked={gender == "male" ? true : false}
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-            />
-            Male
-            <input
-              type="radio"
-              name="gender"
-              value="female"
-              checked={gender == "female" ? true : false}
-              onChange={(e) => {
-                setGender(e.target.value);
-              }}
-            />
-            Female
+      <div style={{ display: "flex", alignItems: "center", gap: "100px" }}>
+        <div style={{ display: "flex", flexDirection: "column", borderRadius: "8px", backgroundColor: "var(--primary-background-color)", padding: "50px", color: "white" }}>
+          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+            <label>Restaurant: </label> {selectedRestaurant.name}
+          </div>
+          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+            <label>Date: </label> {bookingDate}
+          </div>
+          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+            <label>Time Slot: </label> {selectedTimeSlot.time}
+          </div>
+          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+            <label>Selected Seats: </label> {selectedSeats.join(", ")}
           </div>
         </div>
-        <div className="splitter">
-          <label htmlFor="">Age:</label>
-          <input
-            type="number"
-            name="age"
-            value={age}
-            onChange={(e) => {
-              setAge(e.target.value);
-            }}
-          />
+
+        <div>
+          <h2 style={{ fontSize: "50px" }}>Enter Your Details</h2>
+          <form style={{ display: "flex", flexDirection: "column", fontSize: "20px", marginTop: "20px", gap: "15px" }}>
+            <label className="splitter">
+              Name:
+              <input type="text" value={cusName} onChange={(e) => setCusName(e.target.value)} />
+            </label>
+            <label className="splitter">
+              Gender:
+              <div><input type="radio" value="male" checked={gender === "male"} onChange={(e) => setGender(e.target.value)} /> Male
+              
+              <input type="radio" value="female" checked={gender === "female"} onChange={(e) => setGender(e.target.value)} /> Female</div>
+            </label>
+            <label className="splitter">
+              Age:
+              <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
+            </label>
+            <label className="splitter">
+              Mobile:
+              <input type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+            </label>
+            <label className="splitter">
+              Email:
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            </label>
+          </form>
         </div>
-        <div className="splitter">
-          <label htmlFor="">Mobile No:</label>
-          <input
-            type="text"
-            name="mobile"
-            value={mobile}
-            onChange={(e) => {
-              setMobile(e.target.value);
-            }}
-          />
-        </div>
-      </form>
-      
-      <buttondiv
-          style={{
-            display: "grid",
-            gridTemplateColumns: "400px 500px 500px",
-            gap: "40px",
+      </div>
+      <div style={{
+          display: "grid",
+          gridTemplateColumns: "500px 500px",
+          gap: "40px",
+          justifyItems:"center"
+        }}>
+        <Link to="/react-app-demo/domains/timeslots" style={{width:"300px"}}>
+          <button className="nextbutton">⏮️ Previous</button>
+        </Link>
+        <button
+          className="nextbutton"
+          onClick={() => {
+            if (!cusName || !age || !gender || !mobile) {
+              alert("Please fill all the fields");
+              return;
+            }
+            navigate("/react-app-demo/domains/bookSeats");
           }}
         >
-          <Link to="/react-app-demo/domains/restaurant">
-            <button className="nextbutton">⏮️ Previous</button>
-          </Link>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              setCusName("");
-              setAge("");
-              setGender("");
-              setMobile("");
-            }}
-            className="nextbutton"
-          >
-            Clear
-          </button>
-          <button className="nextbutton" onClick={e=>{
-            if(cusName===""||age===""||gender===""||mobile===""){
-              alert("Fill all the Fields");
-            }
-            else{
-              navigate("/react-app-demo/domains/bookSeats")
-            }
-          }}>Next ⏭️</button>
-        </buttondiv>
-
+          Next ⏭️
+        </button>
+      </div>
     </div>
   );
 }

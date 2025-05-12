@@ -2,16 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import './components/components.css';
+import 'leaflet/dist/leaflet.css';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { RestaurantProvider } from './contexts/RestaurantProvider';
 import { CustomerProvider } from './contexts/CustomerProvider';
+import RestaurantBookingApp from './RestaurantBookingApp';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <CustomerProvider>
 <RestaurantProvider>
     <App />
+    {/* <RestaurantBookingApp/> */}
   </RestaurantProvider>
   </CustomerProvider>
   

@@ -9,19 +9,31 @@ import TimeSlots from "./components/TimeSlots";
 import { useRestaurant } from "./contexts/RestaurantProvider";
 import CustomerDetails from "./components/CustomerDetails";
 import BookSeats from "./components/BookSeats";
+import Navbar from "./components/Navbar";
+import UserProfile from './components/UserProfile';
+import BookingSummary from './components/BookingSummary';
+import FoodOrdering from "./components/FoodOrdering";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const {selectedRestaurant,setSelectedRestaurant}=useRestaurant(); 
   return (
     <div className="App">
       <BrowserRouter>
+        <Navbar/>
         <Routes>
           <Route index path="/react-app-demo" element={<MainPage />} />
+          <Route index path="/react-app-demo/profile" element={<UserProfile />} />
+          <Route index path="/react-app-demo/bookings" element={<BookingSummary />} />
           <Route path="/react-app-demo/domains" element={<Domains/>} />
           <Route path="/react-app-demo/domains/restaurant" element={<Restaurents />} />
           <Route path="/react-app-demo/domains/timeslots" element={<TimeSlots restaurant={selectedRestaurant}/>} />
           <Route path="/react-app-demo/domains/customerDetail" element={<CustomerDetails/>} />
           <Route path="/react-app-demo/domains/bookSeats" element={<BookSeats />} />
+          <Route path="/react-app-demo/domains/food" element={<FoodOrdering/>} />
+          <Route path="/react-app-demo/admin/dashboard" element={<AdminDashboard />} />
+
+
         </Routes>
       </BrowserRouter>
     </div>

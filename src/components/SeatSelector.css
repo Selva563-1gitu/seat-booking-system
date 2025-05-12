@@ -35,4 +35,12 @@
     color: white;
     cursor: not-allowed;
   }
-  
+  /* SeatSelector.css (optional) */
+.seat-canvas-wrapper {
+  margin: 20px auto;
+  padding: 10px;
+  border: 2px solid #ccc;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  max-width: 520px;
+}

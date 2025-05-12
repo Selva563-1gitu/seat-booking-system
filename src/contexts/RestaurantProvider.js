@@ -10,6 +10,11 @@ export function RestaurantProvider({ children }) {
   const [bookingDate, setBookingDate] = useState(today);
 
   const [noOfSeats, setNoOfSeats] = useState("");
+  const [selectedSeats, setSelectedSeats] = useState([]);
+
+  const [menusByRestaurant, setMenusByRestaurant] = useState({});
+  const [quantitiesByRestaurant, setQuantitiesByRestaurant] = useState({});
+  const [selectedFoodsByRestaurant, setSelectedFoodsByRestaurant] = useState({});
 
   return (
     <RestaurantContext.Provider
@@ -21,7 +26,9 @@ export function RestaurantProvider({ children }) {
         noOfSeats,
         setNoOfSeats,
         bookingDate,
-        setBookingDate
+        setBookingDate,
+        selectedSeats,setSelectedSeats,
+        menusByRestaurant,setMenusByRestaurant,quantitiesByRestaurant,setQuantitiesByRestaurant,selectedFoodsByRestaurant,setSelectedFoodsByRestaurant
       }}
     >
       {children}
