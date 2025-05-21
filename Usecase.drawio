@@ -1,1 +1,153 @@
-<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/></root></mxGraphModel>
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36 Edg/136.0.0.0" version="27.0.4">
+  <diagram id="Cq9xc8rDQKDl51_CGn8R" name="Page-1">
+    <mxGraphModel dx="1489" dy="880" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ofovHmagaOQjyvhXNjxm-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="220" y="210" width="370" height="690" as="geometry" />
+        </mxCell>
+        <mxCell id="ofovHmagaOQjyvhXNjxm-2" value="Customer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="120" y="370" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-1" value="Restaurant&lt;div&gt;Manager&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="110" y="630" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-2" value="Restaurant&lt;div&gt;Admin&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="20" y="810" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-3" value="Payment&lt;div&gt;Manager&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="650" y="770" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-4" value="Database&lt;div&gt;Manager&lt;/div&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" parent="1" vertex="1">
+          <mxGeometry x="640" y="410" width="30" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-13" value="" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-5" target="ofovHmagaOQjyvhXNjxm-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-14" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-15" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="450" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-18" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" parent="1" source="iRbVr04DwY8iJSGl1z3h-5" target="iRbVr04DwY8iJSGl1z3h-16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-19" value="&amp;lt;&amp;lt;includes&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="iRbVr04DwY8iJSGl1z3h-18" vertex="1" connectable="0">
+          <mxGeometry x="0.2216" y="-1" relative="1" as="geometry">
+            <mxPoint x="-15" y="-22" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-5" value="View Restaurant Menu" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="290" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-20" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-21" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-6" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-6" value="Select Food Items" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="285" y="370" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-22" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;exitX=0.069;exitY=0.785;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-23" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-8" value="Link Food order with Seat booking" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="420" y="580" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-26" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;dashed=1;" parent="1" source="iRbVr04DwY8iJSGl1z3h-9" target="iRbVr04DwY8iJSGl1z3h-6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-27" value="&amp;lt;&amp;lt;extends&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="iRbVr04DwY8iJSGl1z3h-26" vertex="1" connectable="0">
+          <mxGeometry x="0.4267" y="-1" relative="1" as="geometry">
+            <mxPoint x="4" y="13" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-9" value="Display Food Summary" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="425" y="480" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-40" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FPDOowfF5VHocjlHfNAN-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" edge="1" parent="1" source="iRbVr04DwY8iJSGl1z3h-10">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="650" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-10" value="Integrate Loyality perks" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="285" y="530" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-28" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="150" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-29" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="660" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-31" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="810" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-11" value="Initiate Payment" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="260" y="670" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-33" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0;exitDx=0;exitDy=0;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-12" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-34" value="" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" parent="1" source="iRbVr04DwY8iJSGl1z3h-12" target="iRbVr04DwY8iJSGl1z3h-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-35" value="&amp;lt;&amp;lt;includes&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="iRbVr04DwY8iJSGl1z3h-34" vertex="1" connectable="0">
+          <mxGeometry x="0.115" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-39" style="edgeStyle=none;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startFill=0;" parent="1" source="iRbVr04DwY8iJSGl1z3h-12" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="640" y="820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-12" value="Generate Invoice" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="800" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-16" value="Seat Book and Restaurant Selection" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="410" y="270" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="iRbVr04DwY8iJSGl1z3h-32" value="" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="50" y="790" as="sourcePoint" />
+            <mxPoint x="100" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="FPDOowfF5VHocjlHfNAN-2" value="Pre-Food Ordering Module" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="310" y="230" width="170" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -4,6 +4,7 @@ const RestaurantContext = createContext();
 export const useRestaurant = () => useContext(RestaurantContext);
 export function RestaurantProvider({ children }) {
   const today = new Date().toISOString().split("T")[0];
+  const [restaurants, setRestaurants] = useState([]);
 
   const [selectedRestaurant, setSelectedRestaurant] = useState("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
@@ -14,11 +15,15 @@ export function RestaurantProvider({ children }) {
 
   const [menusByRestaurant, setMenusByRestaurant] = useState({});
   const [quantitiesByRestaurant, setQuantitiesByRestaurant] = useState({});
-  const [selectedFoodsByRestaurant, setSelectedFoodsByRestaurant] = useState({});
+  const [selectedFoodsByRestaurant, setSelectedFoodsByRestaurant] = useState(
+    {}
+  );
 
   return (
     <RestaurantContext.Provider
       value={{
+        restaurants,
+        setRestaurants,
         selectedRestaurant,
         setSelectedRestaurant,
         selectedTimeSlot,
@@ -27,8 +32,14 @@ export function RestaurantProvider({ children }) {
         setNoOfSeats,
         bookingDate,
         setBookingDate,
-        selectedSeats,setSelectedSeats,
-        menusByRestaurant,setMenusByRestaurant,quantitiesByRestaurant,setQuantitiesByRestaurant,selectedFoodsByRestaurant,setSelectedFoodsByRestaurant
+        selectedSeats,
+        setSelectedSeats,
+        menusByRestaurant,
+        setMenusByRestaurant,
+        quantitiesByRestaurant,
+        setQuantitiesByRestaurant,
+        selectedFoodsByRestaurant,
+        setSelectedFoodsByRestaurant,
       }}
     >
       {children}

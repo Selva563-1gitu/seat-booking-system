@@ -1,73 +1,181 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRestaurant } from "../contexts/RestaurantProvider";
 import { useCustomerDetail } from "../contexts/CustomerProvider";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3001");
 
 function CustomerDetails() {
   const navigate = useNavigate();
   const {
-    cusName, setCusName,
-    gender, setGender,
-    age, setAge,
-    mobile, setMobile,
-    email, setEmail
+    cusName,
+    setCusName,
+    gender,
+    setGender,
+    age,
+    setAge,
+    mobile,
+    setMobile,
+    email,
+    setEmail,
   } = useCustomerDetail();
 
-  const { selectedRestaurant, selectedTimeSlot, selectedSeats, bookingDate } = useRestaurant();
+  const {
+    selectedRestaurant,
+    selectedTimeSlot,
+    selectedSeats,
+    bookingDate,
+    // setBookedSeats,
+  } = useRestaurant();
+  useEffect(() => {
+    if (selectedRestaurant && selectedTimeSlot) {
+      socket.emit("join", {
+        restaurantId: selectedRestaurant._id,
+        timeSlot: selectedTimeSlot.time,
+      });
+      const handleSeatUpdate = (updatedSeats) => {
+        // setBookedSeats(updatedSeats);
+        alert("⚠️ Seats have been modified. Please refresh or reselect!");
+        // setRefreshAlert(true);
+      };
+
+      socket.on("seat-updated", handleSeatUpdate);
+
+      return () => {
+        socket.off("seat-updated", handleSeatUpdate);
+      };
+    }
+  }, [selectedRestaurant, selectedTimeSlot]);
 
   return (
     <div className="container">
       <div style={{ display: "flex", alignItems: "center", gap: "100px" }}>
-        <div style={{ display: "flex", flexDirection: "column", borderRadius: "8px", backgroundColor: "var(--primary-background-color)", padding: "50px", color: "white" }}>
-          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            borderRadius: "8px",
+            backgroundColor: "var(--primary-background-color)",
+            padding: "50px",
+            color: "white",
+          }}
+        >
+          <div
+            className="splitter"
+            style={{
+              margin: "5px",
+              padding: "20px 10px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }}
+          >
             <label>Restaurant: </label> {selectedRestaurant.name}
           </div>
-          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+          <div
+            className="splitter"
+            style={{
+              margin: "5px",
+              padding: "20px 10px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }}
+          >
             <label>Date: </label> {bookingDate}
           </div>
-          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+          <div
+            className="splitter"
+            style={{
+              margin: "5px",
+              padding: "20px 10px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }}
+          >
             <label>Time Slot: </label> {selectedTimeSlot.time}
           </div>
-          <div className="splitter" style={{ margin: "5px", padding: "20px 10px", backgroundColor: "rgba(255,255,255,0.1)" }}>
+          <div
+            className="splitter"
+            style={{
+              margin: "5px",
+              padding: "20px 10px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+            }}
+          >
             <label>Selected Seats: </label> {selectedSeats.join(", ")}
           </div>
         </div>
 
         <div>
           <h2 style={{ fontSize: "50px" }}>Enter Your Details</h2>
-          <form style={{ display: "flex", flexDirection: "column", fontSize: "20px", marginTop: "20px", gap: "15px" }}>
+          <form
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              fontSize: "20px",
+              marginTop: "20px",
+              gap: "15px",
+            }}
+          >
             <label className="splitter">
               Name:
-              <input type="text" value={cusName} onChange={(e) => setCusName(e.target.value)} />
+              <input
+                type="text"
+                value={cusName}
+                onChange={(e) => setCusName(e.target.value)}
+              />
             </label>
             <label className="splitter">
               Gender:
-              <div><input type="radio" value="male" checked={gender === "male"} onChange={(e) => setGender(e.target.value)} /> Male
-              
-              <input type="radio" value="female" checked={gender === "female"} onChange={(e) => setGender(e.target.value)} /> Female</div>
+              <div>
+                <input
+                  type="radio"
+                  value="male"
+                  checked={gender === "male"}
+                  onChange={(e) => setGender(e.target.value)}
+                />{" "}
+                Male
+                <input
+                  type="radio"
+                  value="female"
+                  checked={gender === "female"}
+                  onChange={(e) => setGender(e.target.value)}
+                />{" "}
+                Female
+              </div>
             </label>
             <label className="splitter">
               Age:
-              <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
             </label>
             <label className="splitter">
               Mobile:
-              <input type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+              <input
+                type="text"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+              />
             </label>
             <label className="splitter">
               Email:
-              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </label>
           </form>
         </div>
       </div>
-      <div style={{
+      <div
+        style={{
           display: "grid",
           gridTemplateColumns: "500px 500px",
           gap: "40px",
-          justifyItems:"center"
-        }}>
-        <Link to="/react-app-demo/domains/timeslots" style={{width:"300px"}}>
+          justifyItems: "center",
+        }}
+      >
+        <Link to="/react-app-demo/domains/timeslots" style={{ width: "300px" }}>
           <button className="nextbutton">⏮️ Previous</button>
         </Link>
         <button

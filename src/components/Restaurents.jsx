@@ -6,10 +6,14 @@ import axios from "axios";
 
 function Restaurents() {
   const markerRefs = useRef({});
-  const [restaurants, setRestaurants] = useState([]);
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLogitude] = useState(0);
-  const { selectedRestaurant, setSelectedRestaurant } = useRestaurant();
+  const {
+    selectedRestaurant,
+    setSelectedRestaurant,
+    restaurants,
+    setRestaurants,
+  } = useRestaurant();
   const [route, setRoute] = useState([]);
 
   const navigate = useNavigate();
@@ -32,6 +36,8 @@ function Restaurents() {
         r.location.coordinates[1] === destLat
     );
     setSelectedRestaurant(selected);
+    // ✅ Save to sessionStorage
+    sessionStorage.setItem("selectedRestaurantId", selected._id);
 
     // Open popup
     const marker = markerRefs.current[selected?.fsq_id];
@@ -43,9 +49,9 @@ function Restaurents() {
     getRestaurants();
     // fetchDetails();
   }, []);
-  useEffect(() => {
-    console.log(selectedRestaurant);
-  }, [selectedRestaurant]);
+  // useEffect(() => {
+  //   console.log(selectedRestaurant);
+  // }, [selectedRestaurant]);
   async function getRestaurants() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -118,6 +124,7 @@ function Restaurents() {
                 key={index}
                 onClick={(e) => {
                   setSelectedRestaurant(domain);
+                  sessionStorage.setItem("selectedRestaurantId", domain._id); // ✅ save to session
                   handleRestaurantClick([
                     domain.location.coordinates[1],
                     domain.location.coordinates[0],

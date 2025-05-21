@@ -4,6 +4,10 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const nearbyRestaurantsRoute = require('./routes/nearbyRestaurants');
 const customerRoute=require('./routes/customer');
+const holidayRoutes = require("./routes/holidays");
+
+const http = require('http');
+const { setupSocket } = require('./socket');
 
 dotenv.config(); // Load .env variables
 
@@ -13,6 +17,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api", holidayRoutes);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
@@ -32,6 +37,10 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+
+const server = http.createServer(app);
+setupSocket(server); // ⬅️ Attach socket to HTTP server
+
+server.listen(PORT, () => {
+  console.log(`🚀 Server with WebSocket running at http://localhost:${PORT}`);
 });

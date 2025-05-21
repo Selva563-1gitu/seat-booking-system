@@ -3,6 +3,8 @@ import { useRestaurant } from "../contexts/RestaurantProvider";
 import { useCustomerDetail } from "../contexts/CustomerProvider";
 import { useNavigate } from "react-router-dom";
 
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3001");
 function BookSeats() {
   const {
     selectedRestaurant,
@@ -13,6 +15,7 @@ function BookSeats() {
     setBookingDate,
     selectedSeats,
     setSelectedSeats,
+    // setBookedSeats,
   } = useRestaurant();
   const {
     cusName,
@@ -92,6 +95,25 @@ function BookSeats() {
       console.error(err);
     }
   }
+  useEffect(() => {
+    if (selectedRestaurant && selectedTimeSlot) {
+      socket.emit("join", {
+        restaurantId: selectedRestaurant._id,
+        timeSlot: selectedTimeSlot.time,
+      });
+      const handleSeatUpdate = (updatedSeats) => {
+        // setBookedSeats(updatedSeats);
+        alert("⚠️ Seats have been modified. Please refresh or reselect!");
+        // setRefreshAlert(true);
+      };
+
+      socket.on("seat-updated", handleSeatUpdate);
+
+      return () => {
+        socket.off("seat-updated", handleSeatUpdate);
+      };
+    }
+  }, [selectedRestaurant, selectedTimeSlot]);
 
   return (
     <div className="container">
@@ -193,11 +215,10 @@ function BookSeats() {
           }}
           onClick={(e) => {
             e.preventDefault();
-            if(!isLoggedIn){
-
+            if (!isLoggedIn) {
               navigate("/react-app-demo/domains/customerDetail");
-            }else{
-              navigate("/react-app-demo/domains/timeslots")
+            } else {
+              navigate("/react-app-demo/domains/timeslots");
             }
           }}
         >

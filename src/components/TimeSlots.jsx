@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRestaurant } from "../contexts/RestaurantProvider";
-import SeatSelector from "./SeatSelector";
-import axios from "axios";
 import { useCustomerDetail } from "../contexts/CustomerProvider";
+import SeatSelector from "./SeatSelector";
+import { io } from "socket.io-client";
 
-function TimeSlots({ restaurant }) {
+const socket = io("http://localhost:3001");
+
+function TimeSlots() {
   const navigate = useNavigate();
   const [layoutData, setLayoutData] = useState([
     {
@@ -107,60 +109,148 @@ function TimeSlots({ restaurant }) {
     { id: "T6-S6", type: "seat", x: 365, y: 300 },
     { id: "T6-S7", type: "seat", x: 320, y: 420 },
     { id: "T6-S8", type: "seat", x: 365, y: 420 },
-  ]);
+  ]); // Your table + seat layout
   const {
+    restaurants,
+    selectedRestaurant, // ⬅️ now using from context
+    setSelectedRestaurant,
     selectedTimeSlot,
     setSelectedTimeSlot,
     bookingDate,
     setBookingDate,
     selectedSeats,
     setSelectedSeats,
+    setRestaurants,
   } = useRestaurant();
-  const {isLoggedIn}=useCustomerDetail();
+
+  const { isLoggedIn } = useCustomerDetail();
+  const [bookedSeats, setBookedSeats] = useState([]);
+
+  const [refreshAlert, setRefreshAlert] = useState(false);
+  const [isHoliday, setIsHoliday] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 30);
   const maxBookingDate = maxDate.toISOString().split("T")[0];
+  useEffect(() => {
+    console.log(selectedTimeSlot);
+  }, [selectedTimeSlot]);
+  useEffect(() => {
+    if (selectedRestaurant && selectedTimeSlot) {
+      socket.emit("join", {
+        restaurantId: selectedRestaurant._id,
+        timeSlot: selectedTimeSlot.time,
+      });
 
-  const getBookedSeats = (slot) => {
-    const entry = slot.bookings.find((b) => b.date === bookingDate);
-    // console.log(entry);
-    return entry?.seat_numbers || [];
-  };
+      const handleSeatUpdate = (updatedSeats) => {
+        setBookedSeats(updatedSeats);
+        alert("⚠️ Seats have been modified. Please refresh or reselect!");
+        // setRefreshAlert(true);
+      };
+
+      socket.on("seat-updated", handleSeatUpdate);
+
+      return () => {
+        socket.off("seat-updated", handleSeatUpdate);
+      };
+    }
+  }, [selectedRestaurant, selectedTimeSlot]);
+
+  useEffect(() => {
+    console.log("inside useeffect2");
+    getRestaurants();
+  }, []);
+  useEffect(() => {
+    if (restaurants.length > 0 && !selectedRestaurant) {
+      const storedId = sessionStorage.getItem("selectedRestaurantId");
+      if (storedId) {
+        const found = restaurants.find((r) => r._id === storedId);
+        if (found) {
+          setSelectedRestaurant(found);
+        }
+      }
+    }
+  }, [restaurants]);
+  useEffect(() => {
+    async function checkHoliday() {
+      if (!bookingDate) return;
+      try {
+        const res = await fetch(
+          `http://localhost:3001/api/is-holiday?date=${bookingDate}`
+        );
+        const data = await res.json();
+        setIsHoliday(data.isPeakHour);
+      } catch (err) {
+        console.error("Holiday check failed", err);
+        setIsHoliday(false);
+      }
+    }
+
+    checkHoliday();
+  }, [bookingDate]);
+  async function getRestaurants() {
+    try {
+      const res = await fetch("http://localhost:3001/api/nearby-restaurants");
+      const data = await res.json();
+      console.log(data);
+      setRestaurants(data.restaurants);
+    } catch (error) {
+      console.error("Failed to fetch restaurants", error);
+    }
+  }
+
+  if (!selectedRestaurant || !selectedRestaurant.time_slots) {
+    return (
+      <div className="container">
+        <h2>Loading restaurant data...</h2>
+      </div>
+    );
+  }
 
   const isPastSlot = (timeStr) => {
     if (bookingDate !== today) return false;
-
     const now = new Date();
     const [rawTime, modifier] = timeStr.split(" ");
     let [hours, minutes] = rawTime.split(":").map(Number);
     if (modifier === "PM" && hours !== 12) hours += 12;
     if (modifier === "AM" && hours === 12) hours = 0;
-
     const slotTime = new Date();
     slotTime.setHours(hours, minutes || 0, 0);
     return slotTime < now;
   };
-  const getBookedSeatIds = (restaurant, selectedTimeSlot, bookingDate) => {
-    if (!restaurant || !selectedTimeSlot || !bookingDate) return [];
 
-    const timeSlot = restaurant.time_slots.find(
-      (slot) => slot.time === selectedTimeSlot.time
-    );
-    if (!timeSlot) return [];
-
-    const bookingEntry = timeSlot.bookings.find((b) => b.date === bookingDate);
-    if (!bookingEntry) return [];
-
-    return bookingEntry.seat_numbers || [];
+  const getBookedSeatsForSlot = (slot) => {
+    const entry = slot.bookings?.find((b) => b.date === bookingDate);
+    return entry?.seat_numbers || [];
   };
 
   return (
-    <div className="container" style={{gap:"0"}}>
+    <div className="container">
+      {isHoliday && (
+        <div
+          style={{
+            backgroundColor: "darkred",
+            color: "white",
+            padding: "10px",
+            borderRadius: "8px",
+            marginBottom: "15px",
+          }}
+        >
+          🎉 Peak hour charges may apply!
+        </div>
+      )}
+
+      {refreshAlert && (
+        <div
+          style={{ backgroundColor: "red", color: "white", padding: "10px" }}
+        >
+          ⚠️ Seats updated! Refresh the page to see latest availability.
+        </div>
+      )}
       <h2 style={{ fontSize: "40px" }}>Select Time Slot and Seats</h2>
 
-      <div style={{ margin: "20px" }} className="splitter">
+      <div style={{ margin: "20px" }}>
         <label>Booking Date: </label>
         <input
           type="date"
@@ -175,14 +265,24 @@ function TimeSlots({ restaurant }) {
         />
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <ul style={{ display: "flex", alignItems: "center",width:"50vw",flexWrap:"wrap", }}>
-          {restaurant.time_slots.filter((slot) => !isPastSlot(slot.time)).length>0 ? (
-            restaurant.time_slots
+      <div style={{ display: "flex", gap: "10px" }}>
+        <ul
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            width: "50vw",
+            gap: "10px",
+          }}
+        >
+          {selectedRestaurant.time_slots.filter(
+            (slot) => !isPastSlot(slot.time)
+          ).length > 0 ? (
+            selectedRestaurant.time_slots
               .filter((slot) => !isPastSlot(slot.time))
               .map((slot, idx) => {
-                const booked = getBookedSeats(slot);
-                const available = 40 - booked.length;
+                const booked = getBookedSeatsForSlot(slot);
+                const available =
+                  selectedRestaurant.total_seats - booked.length;
 
                 return (
                   <li
@@ -190,6 +290,7 @@ function TimeSlots({ restaurant }) {
                     onClick={() => {
                       setSelectedTimeSlot(slot);
                       setSelectedSeats([]);
+                      setBookedSeats(booked);
                     }}
                     className="domain"
                     style={{
@@ -197,8 +298,10 @@ function TimeSlots({ restaurant }) {
                         selectedTimeSlot?.time === slot.time
                           ? "var(--primary-background-color)"
                           : "#fff",
-              width:"auto"
-
+                      width: "auto",
+                      padding: "10px",
+                      borderRadius: "10px",
+                      cursor: "pointer",
                     }}
                   >
                     <h4
@@ -225,7 +328,9 @@ function TimeSlots({ restaurant }) {
                 );
               })
           ) : (
-            <p style={{textAlign:"center", color:"orange",margin:"40px"}}>No Time Slots available today! Choose another date!!</p>
+            <p style={{ textAlign: "center", color: "orange", margin: "40px" }}>
+              No Time Slots available today! Choose another date!!
+            </p>
           )}
         </ul>
 
@@ -234,23 +339,17 @@ function TimeSlots({ restaurant }) {
             layoutData={layoutData}
             selectedSeats={selectedSeats}
             setSelectedSeats={setSelectedSeats}
-            bookedSeats={getBookedSeatIds(
-              restaurant,
-              selectedTimeSlot,
-              bookingDate
-            )}
+            bookedSeats={bookedSeats}
           />
         )}
       </div>
 
-      <div
-      className="buttondiv"
-      ><button
+      <div className="buttondiv">
+        <button
           className="nextbutton"
-          onClick={() => {
-            navigate("/react-app-demo/domains/restaurant");
-          }}
-        >⏮️ Previous
+          onClick={() => navigate("/react-app-demo/domains/restaurant")}
+        >
+          ⏮️ Previous
         </button>
         <button
           className="nextbutton"
@@ -259,12 +358,11 @@ function TimeSlots({ restaurant }) {
               alert("Please select a time slot and seats!");
               return;
             }
-            if(!isLoggedIn){
-
-              navigate("/react-app-demo/domains/customerDetail");
-            }else{
-              navigate("/react-app-demo/domains/bookSeats");
-            }
+            navigate(
+              isLoggedIn
+                ? "/react-app-demo/domains/bookSeats"
+                : "/react-app-demo/domains/customerDetail"
+            );
           }}
         >
           Next ⏭️

@@ -6,6 +6,7 @@ const SeatSelector = ({ layoutData, selectedSeats, setSelectedSeats, bookedSeats
 
   useEffect(() => {
     setSeats(layoutData);
+    console.log("nnjn")
   }, [layoutData]);
 
   const handleSeatClick = (seatId) => {

@@ -4,6 +4,7 @@ const router = express.Router();
 const odbc = require("odbc");
 const Restaurant = require("../models/Restaurant");
 const sendBookingEmail = require("../mailer");
+const { notifySeatChange } = require("../socket");
 
 // Connect to Oracle DB
 async function connectDb() {
@@ -81,7 +82,8 @@ router.get("/api/customer-bookings", async (req, res) => {
     console.error("❌ Oracle Query Error:", err.message);
     res.status(500).json({ message: "Error querying Oracle DB" });
   }
-});router.post("/api/save-food-order", async (req, res) => {
+});
+router.post("/api/save-food-order", async (req, res) => {
   const { restaurantName, timing, customerMobile, items } = req.body;
 
   const connection = await connectDb();
@@ -170,6 +172,12 @@ router.post("/api/customer-entry", async (req, res) => {
 
     await restaurant.save();
     console.log("✅ MongoDB seat numbers saved");
+    // ✅ Notify WebSocket clients
+    notifySeatChange(
+      restaurant._id,
+      body.selectedTimeSlot.time,
+      slot.bookings.find((b) => b.date === body.bookingDate)?.seat_numbers || []
+    );
 
     await sendBookingEmail({
       to: body.email,
