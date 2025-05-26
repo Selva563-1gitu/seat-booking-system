@@ -121,13 +121,14 @@ function TimeSlots() {
     selectedSeats,
     setSelectedSeats,
     setRestaurants,
+    isHoliday,
+    setIsHoliday
   } = useRestaurant();
 
   const { isLoggedIn } = useCustomerDetail();
   const [bookedSeats, setBookedSeats] = useState([]);
 
   const [refreshAlert, setRefreshAlert] = useState(false);
-  const [isHoliday, setIsHoliday] = useState(false);
 
   const today = new Date().toISOString().split("T")[0];
   const maxDate = new Date();
@@ -136,6 +137,7 @@ function TimeSlots() {
   useEffect(() => {
     console.log(selectedTimeSlot);
   }, [selectedTimeSlot]);
+  
   useEffect(() => {
     if (selectedRestaurant && selectedTimeSlot) {
       socket.emit("join", {
@@ -264,7 +266,7 @@ function TimeSlots() {
           max={maxBookingDate}
         />
       </div>
-
+          {console.log(today,maxBookingDate)}
       <div style={{ display: "flex", gap: "10px" }}>
         <ul
           style={{

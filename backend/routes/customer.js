@@ -92,10 +92,9 @@ router.post("/api/save-food-order", async (req, res) => {
   }
 
   try {
-    const query = `SELECT * FROM customer_table WHERE restaurantbooked = '${restaurantName}' AND timing = TO_DATE('${timing}', 'YYYY-MM-DD HH24:MI:SS') AND mobile = '${customerMobile}' FETCH FIRST 1 ROWS ONLY`;
-
+    const query = `SELECT * FROM customer_table WHERE restaurantbooked = '${restaurantName}' AND timing = TO_DATE('${timing}', 'YYYY-mm-dd HH24:MI:SS') AND mobile = '${customerMobile}' FETCH FIRST 1 ROWS ONLY`;
+    // console.log(query);
     const result = await connection.query(query);
-    console.log(result);
     if (result.length === 0) {
       return res.status(404).json({ error: "Booking not found" });
     }
@@ -106,10 +105,10 @@ router.post("/api/save-food-order", async (req, res) => {
       UPDATE customer_table
       SET food_orders = '${jsonString}'
       WHERE restaurantbooked = '${restaurantName}' 
-        AND timing = TO_DATE('${timing}', 'YYYY-MM-DD HH24:MI:SS')
+        AND timing = TO_DATE('${timing}', 'YYYY-mm-dd HH24:MI:SS')
         AND mobile = '${customerMobile}'
     `;
-
+    // console.log(update)
     await connection.query(update);
     res.json({ message: "✅ Food order stored successfully in Oracle" });
   } catch (err) {
@@ -138,11 +137,11 @@ router.post("/api/customer-entry", async (req, res) => {
     const insertQuery = `
       INSERT INTO customer_table (
         cusname, age, gender, mobile,
-        restaurantbooked, timing, selected_seats, email
+        restaurantbooked, timing, selected_seats, email,amount
       ) VALUES (
         '${body.cusName}', ${body.age}, '${body.gender}', '${body.mobile}',
         '${body.selectedRestaurant.name}', TO_DATE('${body.bookingDate} ${body.selectedTimeSlot.time}', 'yyyy-mm-dd HH:MI AM'),
-        '${seatStr}', '${body.email}'
+        '${seatStr}', '${body.email}',${body.amount}
       )
     `;
 

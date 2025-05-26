@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import { useRestaurant } from "../contexts/RestaurantProvider";
 
 const FoodOrdering = () => {
-  const { mobile } = useCustomerDetail();
+  const { mobile, userPlan, setPremiumCoins } = useCustomerDetail();
   const navigate = useNavigate();
   const [groupedBookings, setGroupedBookings] = useState([]);
   const [tempSelectedFoods, setTempSelectedFoods] = useState({});
@@ -20,14 +20,22 @@ const FoodOrdering = () => {
   } = useRestaurant();
 
   function parseLocaleDateTime(inputString) {
-    const [datePart, timePart, meridian] = inputString.replace(",", "").split(" ");
+    const [datePart, timePart, meridian] = inputString
+      .replace(",", "")
+      .split(" ");
     const [day, month, year] = datePart.split("/").map(Number);
     let [hours, minutes, seconds] = timePart.split(":").map(Number);
 
     if (meridian?.toUpperCase() === "PM" && hours < 12) hours += 12;
     if (meridian?.toUpperCase() === "AM" && hours === 12) hours = 0;
 
-    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")} ${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(
+      2,
+      "0"
+    )} ${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(seconds).padStart(2, "0")}`;
   }
 
   useEffect(() => {
@@ -43,20 +51,24 @@ const FoodOrdering = () => {
           restaurant: b.RESTAURANTBOOKED,
           timing: new Date(b.TIMING).toLocaleString(),
           rawTiming: b.TIMING,
-          food_orders: b.FOOD_ORDERS
+          food_orders: b.FOOD_ORDERS,
         }));
 
         setGroupedBookings(grouped);
 
         // 2. Fetch menus per restaurant
-        const uniqueRestaurants = [...new Set(upcoming.map((b) => b.RESTAURANTBOOKED))];
+        const uniqueRestaurants = [
+          ...new Set(upcoming.map((b) => b.RESTAURANTBOOKED)),
+        ];
         uniqueRestaurants.forEach((restaurantName) => {
-          axios.post("/api/restaurant-menu-by-name", { restaurantName }).then((res) => {
-            setMenusByRestaurant((prev) => ({
-              ...prev,
-              [restaurantName]: res.data.menu,
-            }));
-          });
+          axios
+            .post("/api/restaurant-menu-by-name", { restaurantName })
+            .then((res) => {
+              setMenusByRestaurant((prev) => ({
+                ...prev,
+                [restaurantName]: res.data.menu,
+              }));
+            });
         });
 
         // 3. Parse & apply previous food orders
@@ -128,8 +140,16 @@ const FoodOrdering = () => {
         customerMobile: mobile,
         items: selectedData,
       });
-
-      alert(`✅ Order placed for ₹${selectedData.reduce((sum, i) => sum + i.total, 0)} at ${restaurant}`);
+      if(userPlan==="Premium"){
+        alert(`Yep! You have earned ${selectedData.length} premium coins `);
+        setPremiumCoins(p=>p+selectedData.length)
+      }
+      alert(
+        `✅ Order placed for ₹${selectedData.reduce(
+          (sum, i) => sum + i.total,
+          0
+        )} at ${restaurant}`
+      );
 
       setSelectedFoodsByRestaurant((prev) => ({
         ...prev,
@@ -160,7 +180,9 @@ const FoodOrdering = () => {
           <div key={key} className="restaurant-food-block">
             <div className="restaurant-header">
               <h3>{restaurant}</h3>
-              <p><strong>Slot:</strong> {timing}</p>
+              <p>
+                <strong>Slot:</strong> {timing}
+              </p>
             </div>
 
             <div className="food-grid">
@@ -174,29 +196,46 @@ const FoodOrdering = () => {
                   <h4>{item.name}</h4>
                   <p>₹{item.price}</p>
                   <div className="qty-control">
-                    <button onClick={() => handleQuantityChange(restaurant, timing, item._id, -1)}>-</button>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(restaurant, timing, item._id, -1)
+                      }
+                    >
+                      -
+                    </button>
                     <span>{quantitiesByRestaurant[key]?.[item._id] || 0}</span>
-                    <button onClick={() => handleQuantityChange(restaurant, timing, item._id, 1)}>+</button>
+                    <button
+                      onClick={() =>
+                        handleQuantityChange(restaurant, timing, item._id, 1)
+                      }
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            {(tempSelectedFoods[key]?.items?.length > 0 || selectedFoodsByRestaurant[key]?.items?.length > 0) && (
+            {(tempSelectedFoods[key]?.items?.length > 0 ||
+              selectedFoodsByRestaurant[key]?.items?.length > 0) && (
               <div className="order-summary">
                 <h4>🧾 Summary</h4>
                 <ul>
-                  {(tempSelectedFoods[key]?.items || selectedFoodsByRestaurant[key]?.items).map((item) => (
+                  {(
+                    tempSelectedFoods[key]?.items ||
+                    selectedFoodsByRestaurant[key]?.items
+                  ).map((item) => (
                     <li key={item._id}>
                       {item.name} × {item.quantity} = ₹{item.total}
                     </li>
                   ))}
                 </ul>
                 <strong>
-                  Total: ₹{(tempSelectedFoods[key]?.items || selectedFoodsByRestaurant[key]?.items).reduce(
-                    (sum, i) => sum + i.total,
-                    0
-                  )}
+                  Total: ₹
+                  {(
+                    tempSelectedFoods[key]?.items ||
+                    selectedFoodsByRestaurant[key]?.items
+                  ).reduce((sum, i) => sum + i.total, 0)}
                 </strong>
                 {tempSelectedFoods[key]?.items && (
                   <div>

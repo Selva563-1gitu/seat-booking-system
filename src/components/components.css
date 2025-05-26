@@ -125,6 +125,72 @@ body {
   }
 }
 
+.plan-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.plan-card {
+  flex: 1 1 280px;
+  background: #fdfdfd;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+  transition: 0.3s;
+}
+
+.plan-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.plan-card h4 {
+  margin-bottom: 0.5rem;
+}
+
+.plan-card p {
+  font-weight: bold;
+  color: #444;
+}
+
+.plan-card ul {
+  text-align: left;
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  list-style-type: none;
+}
+
+.plan-card ul li::before {
+  color: green;
+  font-weight: bold;
+}
+
+.plan-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #6200ea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.plan-btn.disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.plan-card.basic {
+  background-color: #f8f9fa;
+}
+
+.plan-card.premium {
+  background-color: #f1e4ff;
+  border-color: #b86eff;
+}
 
 .user-profile,
 .booking-summary {

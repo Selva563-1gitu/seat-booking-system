@@ -15,6 +15,7 @@ import BookingSummary from './components/BookingSummary';
 import FoodOrdering from "./components/FoodOrdering";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminAnalytics from "./components/AdminAnalytics";
+import Payment from "./components/Payment";
 
 function App() {
   const {selectedRestaurant,setSelectedRestaurant}=useRestaurant(); 
@@ -33,6 +34,7 @@ function App() {
           <Route path="/react-app-demo/domains/bookSeats" element={<BookSeats />} />
           <Route path="/react-app-demo/domains/food" element={<FoodOrdering/>} />
           <Route path="/react-app-demo/admin/dashboard" element={<AdminAnalytics />} />
+          <Route path="/react-app-demo/domains/payment" element={<Payment />} />
 
 
         </Routes>

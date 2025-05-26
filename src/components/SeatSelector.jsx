@@ -8,6 +8,7 @@ const SeatSelector = ({ layoutData, selectedSeats, setSelectedSeats, bookedSeats
     setSeats(layoutData);
     console.log("nnjn")
   }, [layoutData]);
+  
 
   const handleSeatClick = (seatId) => {
     if (bookedSeats.includes(seatId)) return; // Prevent selecting booked seats
@@ -53,6 +54,8 @@ const SeatSelector = ({ layoutData, selectedSeats, setSelectedSeats, bookedSeats
                     isBooked ? "white" :
                     isSelected ? "white" : "black"
                   }
+                  onClick={() => handleSeatClick(item.id)}
+                  
                 />
               </React.Fragment>
             );

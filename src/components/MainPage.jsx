@@ -4,12 +4,12 @@ import { useCustomerDetail } from "../contexts/CustomerProvider";
 
 function MainPage() {
   const navigate = useNavigate();
-  const { isLoggedIn, cusName } = useCustomerDetail();
+  const { isLoggedIn, cusName, premiumCoins } = useCustomerDetail();
 
   if (!isLoggedIn) {
     return (
       <div className="container home">
-        <h1>Welcome to Seat Booking System</h1>
+        <h1>Welcome to Restaurant Seat Booking Module</h1>
         <p>Please login to access your dashboard and reserve your seats.</p>
         <Link to="/react-app-demo/domains">
           <button className="nextbutton">Get Started</button>
@@ -24,7 +24,10 @@ function MainPage() {
       <p className="dashboard-sub">Explore restaurant benefits and offers</p>
 
       <div className="dashboard-grid">
-        <div className="dashboard-card" onClick={() => navigate("/react-app-demo/domains/food")}>
+        <div
+          className="dashboard-card"
+          onClick={() => navigate("/react-app-demo/domains/food")}
+        >
           <h3>🍽️ Prebook Your Food</h3>
           <p>Save time by ordering food in advance</p>
         </div>
@@ -37,18 +40,26 @@ function MainPage() {
             <li>Weekend Premium Pass available</li>
           </ul>
         </div>
-
-        <div className="dashboard-card">
-          <h3>💎 Premium Coins</h3>
-          <p>You have <b>28</b> coins. Redeem now for extra perks!</p>
-        </div>
+        {premiumCoins !== 0 ? (
+          <div className="dashboard-card">
+            <h3>💎 Premium Coins</h3>
+            <p>
+              You have <b>{premiumCoins}</b> coins. Redeem now for extra perks!
+            </p>
+          </div>
+        ) : (
+          <></>
+        )}
 
         <div className="dashboard-card">
           <h3>⏰ Non-Peak Discounts</h3>
           <p>Enjoy 15% off when you dine before 12 PM or after 9 PM.</p>
         </div>
 
-        <div className="dashboard-card" onClick={() => navigate("/react-app-demo/domains/restaurant")}>
+        <div
+          className="dashboard-card"
+          onClick={() => navigate("/react-app-demo/domains/restaurant")}
+        >
           <h3>🪑 Book a Seat</h3>
           <p>Choose your favorite restaurant and reserve your table.</p>
         </div>

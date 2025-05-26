@@ -16,6 +16,7 @@ function BookSeats() {
     selectedSeats,
     setSelectedSeats,
     // setBookedSeats,
+    isHoliday,
   } = useRestaurant();
   const {
     cusName,
@@ -29,17 +30,26 @@ function BookSeats() {
     email,
     setEmail,
     isLoggedIn,
+    userPlan,setPremiumCoins
   } = useCustomerDetail();
 
   const [timer, setTimer] = useState(10);
   const navigate = useNavigate();
   const today = new Date().toISOString().split("T")[0];
-
+  const [amount,setAmount]=useState(0);
+  useEffect(()=>{
+    setAmount(isHoliday?selectedSeats.length*200:selectedSeats.length*150)
+  },[selectedSeats])
   useEffect(() => {
     const countdown = setInterval(() => {
       setTimer((prev) => {
         if (prev <= 1) {
           clearInterval(countdown);
+          if(userPlan==="Premium"){
+            alert(`Yep! You have earned ${selectedSeats.length} Premium Points!`);
+            setPremiumCoins(p=>p+selectedSeats.length)
+          }
+          
           bookSeats(); // Auto-book when timer reaches 0
 
           navigate("/react-app-demo");
@@ -48,6 +58,7 @@ function BookSeats() {
           setSelectedTimeSlot("");
           setBookingDate(today);
           setSelectedSeats([]);
+          setAmount(0);
 
           if (!isLoggedIn) {
             setCusName("");
@@ -75,6 +86,7 @@ function BookSeats() {
       selectedSeats,
       bookingDate,
       email,
+      amount
     };
 
     try {
@@ -200,6 +212,15 @@ function BookSeats() {
             }}
           >
             <label>Selected Seats: </label> {selectedSeats.join(",")}
+          </div>
+          <div
+            className="splitter"
+            style={{
+              marginTop:"30px",
+              fontSize:"48px"
+            }}
+          >
+            <label>Amount: </label> Rs.{amount}/-
           </div>
         </div>
         <p>

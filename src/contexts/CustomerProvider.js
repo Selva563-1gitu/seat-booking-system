@@ -10,6 +10,8 @@ export function CustomerProvider({ children }) {
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [foodOrdered, setFoodOrdered] = useState(false);
+  const [userPlan,setUserPlan]=useState("Basic");
+  const [premiumCoins,setPremiumCoins]=useState(0);
 
   useEffect(() => {
     const storedCustomer = localStorage.getItem("customer");
@@ -18,9 +20,10 @@ export function CustomerProvider({ children }) {
       setCusName(parsed.cusName || "");
       setEmail(parsed.email || "");
       setMobile(parsed.mobile || "");
+      setAge(parsed.age || "");
+      setGender(parsed.gender || "");
     }
   }, []);
-
   const login = (customerData) => {
     setCusName(customerData.cusName);
     setEmail(customerData.email);
@@ -47,7 +50,7 @@ export function CustomerProvider({ children }) {
         mobile, setMobile,
         email, setEmail,
         foodOrdered, setFoodOrdered,
-        login, logout,
+        login, logout,userPlan,setUserPlan,premiumCoins,setPremiumCoins,
         isLoggedIn: !!mobile && !!email
       }}
     >

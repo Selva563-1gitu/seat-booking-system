@@ -9,6 +9,7 @@ export function RestaurantProvider({ children }) {
   const [selectedRestaurant, setSelectedRestaurant] = useState("");
   const [selectedTimeSlot, setSelectedTimeSlot] = useState("");
   const [bookingDate, setBookingDate] = useState(today);
+  const [isHoliday, setIsHoliday] = useState(false);
 
   const [noOfSeats, setNoOfSeats] = useState("");
   const [selectedSeats, setSelectedSeats] = useState([]);
@@ -40,6 +41,7 @@ export function RestaurantProvider({ children }) {
         setQuantitiesByRestaurant,
         selectedFoodsByRestaurant,
         setSelectedFoodsByRestaurant,
+        isHoliday,setIsHoliday
       }}
     >
       {children}
