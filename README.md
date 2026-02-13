@@ -6,10 +6,12 @@
 
 ## To run backend:
 
+> npm install
 > node index
 
 ## To run frontend:
 
+> npm install
 > npm start
 
 
