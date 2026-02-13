@@ -15,7 +15,7 @@ function Restaurents() {
     setRestaurants,
   } = useRestaurant();
   const [route, setRoute] = useState([]);
-
+  const [location,setLocation]=useState("");
   const navigate = useNavigate();
 
   const handleRestaurantClick = async (restaurantPosition) => {
@@ -96,6 +96,8 @@ function Restaurents() {
   return (
     <div className="container">
       <h2 style={{ fontSize: "40px" }}>Select Nearby Restaurant...</h2>
+      <input type="text" value={location} onChange={e=>setLocation(e.target.value)} placeholder="Enter the Location"/>
+      
       <div style={{ display: "flex", alignItems: "center" }}>
         <ul
           style={{
