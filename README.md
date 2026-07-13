@@ -30,18 +30,18 @@ dependency entirely so it can ship as a single Docker image.
 
 ```
 ┌─────────────┐        REST / WebSocket        ┌──────────────────┐
-│   React     │ ─────────────────────────────► │   Express API     │
-│  Frontend   │ ◄───────────────────────────── │   (Node.js)       │
-└─────────────┘                                 └─────────┬─────────┘
-                                                            │
-                              ┌─────────────────────────────┼─────────────────────────────┐
-                              │                              │                              │
-                    ┌─────────▼─────────┐         ┌──────────▼──────────┐        ┌──────────▼──────────┐
-                    │     MongoDB        │         │   Oracle Database    │        │   External APIs      │
-                    │  Restaurants,       │         │   (via ODBC + DSN)    │        │  Foursquare Places,   │
-                    │  availability,      │         │   customer_table:     │        │  Calendarific,        │
-                    │  menus              │         │   bookings            │        │  Gmail (Nodemailer)   │
-                    └─────────────────────┘         └──────────────────────┘        └───────────────────────┘
+│   React     │ ─────────────────────────────► │   Express API    │
+│  Frontend   │ ◄───────────────────────────── │   (Node.js)      │
+└─────────────┘                                └─────────┬────────┘
+                                                         │
+                            ┌────────────────────────────┼─────────────────────────────┐
+                            │                            │                             │
+                  ┌─────────▼─────────┐       ┌──────────▼──────────┐       ┌──────────▼──────────┐
+                  │     MongoDB       │       │   Oracle Database   │       │   External APIs     │
+                  │  Restaurants,     │       │   (via ODBC + DSN)  │       │  Foursquare Places, │
+                  │  availability,    │       │   customer_table:   │       │  Calendarific,      │
+                  │  menus            │       │   bookings          │       │  Gmail (Nodemailer) │
+                  └───────────────────┘       └─────────────────────┘       └─────────────────────┘
 ```
 
 A full diagram is included at `docs/highlevelarchitecture.pdf`.
@@ -201,25 +201,6 @@ Server boots on `http://localhost:3001`.
 │   │   └── nearbyRestaurants.js
 │   └── socket.js
 ├── build
-│   ├── asset-manifest.json
-│   ├── favicon.ico
-│   ├── index.html
-│   ├── logo192.png
-│   ├── logo512.png
-│   ├── manifest.json
-│   ├── robots.txt
-│   └── static
-│       ├── css
-│       │   ├── main.f855e6bc.css
-│       │   └── main.f855e6bc.css.map
-│       ├── js
-│       │   ├── 453.a6a97343.chunk.js
-│       │   ├── 453.a6a97343.chunk.js.map
-│       │   ├── main.e3963fd5.js
-│       │   ├── main.e3963fd5.js.LICENSE.txt
-│       │   └── main.e3963fd5.js.map
-│       └── media
-│           └── logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg
 ├── ccoverview.drawio
 ├── er-diagram.pdf
 ├── flowchart.drawio
@@ -234,42 +215,6 @@ Server boots on `http://localhost:3001`.
 │   ├── background-image.jpg
 │   ├── favicon.ico
 │   ├── images
-│   │   ├── burger.jpg
-│   │   ├── butterchicken.jpg
-│   │   ├── chickenbiryani.jpg
-│   │   ├── chicken.jpg
-│   │   ├── chillickicken.jpg
-│   │   ├── chutney.jpg
-│   │   ├── coffee.jpg
-│   │   ├── daalmakhani.jpg
-│   │   ├── dosa.jpg
-│   │   ├── egg.jpg
-│   │   ├── friedrice.jpg
-│   │   ├── fries.jpg
-│   │   ├── gobi.jpg
-│   │   ├── gulab.jpg
-│   │   ├── icecream.jpg
-│   │   ├── idly.jpg
-│   │   ├── jeerarice.jpg
-│   │   ├── lassi.jpg
-│   │   ├── mutton.jpg
-│   │   ├── naan.jpg
-│   │   ├── noodles.jpg
-│   │   ├── paneer.jpg
-│   │   ├── pasta.jpg
-│   │   ├── pavbhaji.jpg
-│   │   ├── pizza.jpg
-│   │   ├── poori.jpg
-│   │   ├── raita.jpg
-│   │   ├── salad.jpg
-│   │   ├── sandwich.jpg
-│   │   ├── shake.jpg
-│   │   ├── soda.jpg
-│   │   ├── soup.jpg
-│   │   ├── springroll.jpg
-│   │   ├── vada.jpg
-│   │   ├── vegbiryani.jpg
-│   │   └── wrap.jpg
 │   ├── index.html
 │   ├── logo192.png
 │   ├── logo512.png
