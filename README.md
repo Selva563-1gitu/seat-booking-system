@@ -81,12 +81,266 @@ under a Node.js application layer.
 
 ---
 
-## To run backend:
+## 📋 Prerequisites
 
-> node index
+- Node.js 18+
+- MongoDB (local or Atlas)
+- Oracle Database (Instant Client) reachable from your machine
+- A configured **ODBC System DSN** pointing at that Oracle instance
+  - Windows: via *ODBC Data Source Administrator*
+  - Linux: `unixODBC` + Oracle Instant Client + manual `odbc.ini` / `odbcinst.ini`
+    (expect friction here — this is exactly the pain point v2 removes)
+- A Foursquare API key
+- A Calendarific API key
+- A Gmail account with an App Password for SMTP
 
-## To run frontend:
+---
 
-> npm start
+## ⚙️ Setup
 
+### 1. Clone and install
 
+```bash
+git clone https://github.com/Selva563-1gitu/seat-booking-system
+
+#Frontend
+npm install
+
+#Backend 
+cd backend
+npm install
+```
+
+### 2. Configure the Oracle DSN
+
+Create a System DSN named `MyOracleDB` pointing at your Oracle instance. The
+app connects with:
+
+```js
+odbc.connect(`DSN=MyOracleDB;UID=uid;PWD=pwd`)
+```
+
+> ⚠️ Don't hardcode credentials as shown in the current source — move `UID`/`PWD`
+> into environment variables before you push credentials anywhere public.
+
+### 3. Create the Oracle table
+
+```sql
+CREATE TABLE customer_table (
+  id                NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  cusname           VARCHAR2(100),
+  age               NUMBER,
+  gender            VARCHAR2(20),
+  mobile            VARCHAR2(20),
+  restaurantbooked  VARCHAR2(200),
+  timing            DATE,
+  selected_seats    VARCHAR2(500),
+  email             VARCHAR2(200),
+  price             NUMBER
+);
+```
+
+### 4. Environment variables
+
+Create a `.env` file in the project root:
+
+```env
+PORT=3001
+MONGO_URI=mongodb://localhost:27017/restaurant_booking
+GMAIL_USER=..
+GMAIL_PASS=..
+```
+
+### 5. Run
+
+```bash
+
+#Seperate run for Frontend and Backend
+npm start
+```
+
+Server boots on `http://localhost:3001`.
+
+---
+
+## 📡 API Reference
+
+| Method | Route | Description | Data source |
+|---|---|---|---|
+| `POST` | `/api/nearby-restaurants` | Fetch + cache nearby restaurants | Foursquare → MongoDB |
+| `GET` | `/api/nearby-restaurants` | List cached restaurants | MongoDB |
+| `GET` | `/api/restaurant-menu/:id` | Get menu by Foursquare ID | MongoDB |
+| `POST` | `/api/restaurant-menu-by-name` | Get menu by restaurant name | MongoDB |
+| `GET` | `/is-holiday` | Peak-hour / holiday check | Calendarific |
+| `POST` | `/api/check-customer` | Look up returning customer | Oracle |
+| `POST` | `/api/get-customer-bookings` | Bookings by mobile number | Oracle |
+| `GET` | `/api/customer-bookings` | Bookings by email + phone | Oracle |
+| `POST` | `/api/customer-entry` | Create a new booking | Oracle + MongoDB + Email |
+| `POST` | `/api/save-food-order` | Attach a food order to a booking | Oracle |
+| `GET` | `/api/admin/bookings` | All bookings (admin view) | Oracle |
+
+---
+
+## 📁 Folder Structure
+
+```
+.
+├── activitychart.drawio
+├── backend
+│   ├── index.js
+│   ├── mailer.js
+│   ├── models
+│   │   ├── RestaurantAvailability.js
+│   │   └── Restaurant.js
+│   ├── package.json
+│   ├── package-lock.json
+│   ├── routes
+│   │   ├── admin.js
+│   │   ├── customer.js
+│   │   ├── holidays.js
+│   │   └── nearbyRestaurants.js
+│   └── socket.js
+├── build
+│   ├── asset-manifest.json
+│   ├── favicon.ico
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── static
+│       ├── css
+│       │   ├── main.f855e6bc.css
+│       │   └── main.f855e6bc.css.map
+│       ├── js
+│       │   ├── 453.a6a97343.chunk.js
+│       │   ├── 453.a6a97343.chunk.js.map
+│       │   ├── main.e3963fd5.js
+│       │   ├── main.e3963fd5.js.LICENSE.txt
+│       │   └── main.e3963fd5.js.map
+│       └── media
+│           └── logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg
+├── ccoverview.drawio
+├── er-diagram.pdf
+├── flowchart.drawio
+├── FLOW.drawio
+├── flowgraph.drawio
+├── highlevelarchitecture.drawio
+├── highlevelarchitecture.pdf
+├── module1.drawio
+├── package.json
+├── package-lock.json
+├── public
+│   ├── background-image.jpg
+│   ├── favicon.ico
+│   ├── images
+│   │   ├── burger.jpg
+│   │   ├── butterchicken.jpg
+│   │   ├── chickenbiryani.jpg
+│   │   ├── chicken.jpg
+│   │   ├── chillickicken.jpg
+│   │   ├── chutney.jpg
+│   │   ├── coffee.jpg
+│   │   ├── daalmakhani.jpg
+│   │   ├── dosa.jpg
+│   │   ├── egg.jpg
+│   │   ├── friedrice.jpg
+│   │   ├── fries.jpg
+│   │   ├── gobi.jpg
+│   │   ├── gulab.jpg
+│   │   ├── icecream.jpg
+│   │   ├── idly.jpg
+│   │   ├── jeerarice.jpg
+│   │   ├── lassi.jpg
+│   │   ├── mutton.jpg
+│   │   ├── naan.jpg
+│   │   ├── noodles.jpg
+│   │   ├── paneer.jpg
+│   │   ├── pasta.jpg
+│   │   ├── pavbhaji.jpg
+│   │   ├── pizza.jpg
+│   │   ├── poori.jpg
+│   │   ├── raita.jpg
+│   │   ├── salad.jpg
+│   │   ├── sandwich.jpg
+│   │   ├── shake.jpg
+│   │   ├── soda.jpg
+│   │   ├── soup.jpg
+│   │   ├── springroll.jpg
+│   │   ├── vada.jpg
+│   │   ├── vegbiryani.jpg
+│   │   └── wrap.jpg
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── seats-arrangements.pdf
+├── README.md
+├── README-v1-oracle-odbc.md
+├── RestaurantBookingsql
+├── sample.drawio
+├── seat-alignment.drawio
+├── se-lab-ppt.pptx
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── App.test.js
+│   ├── BookSeatsForm.css
+│   ├── BookSeatsForm.jsx
+│   ├── components
+│   │   ├── AdminAnalytics.jsx
+│   │   ├── AdminDashboard.jsx
+│   │   ├── BookingSummary.jsx
+│   │   ├── BookSeats.jsx
+│   │   ├── components.css
+│   │   ├── CustomerDetails.jsx
+│   │   ├── Domains.jsx
+│   │   ├── FoodOrdering.jsx
+│   │   ├── MainPage.jsx
+│   │   ├── MapPage.jsx
+│   │   ├── Navbar.css
+│   │   ├── Navbar.jsx
+│   │   ├── Payment.jsx
+│   │   ├── Restaurents.jsx
+│   │   ├── SeatSelector.css
+│   │   ├── SeatSelector.jsx
+│   │   ├── TimeSlots.jsx
+│   │   └── UserProfile.jsx
+│   ├── contexts
+│   │   ├── CustomerProvider.js
+│   │   └── RestaurantProvider.js
+│   ├── index.css
+│   ├── index.js
+│   ├── logo.svg
+│   ├── newfile.jsx
+│   ├── pages
+│   ├── reportWebVitals.js
+│   ├── RestaurantBookingApp.jsx
+│   └── setupTests.js
+├── taskchart.drawio
+├── testing.drawio
+├── Untitled Diagram.drawio
+└── Usecase.drawio
+
+15 directories, 123 files
+```
+
+---
+
+## ⚠️ Known Limitations (by design)
+
+- **Not containerizable as-is.** ODBC + a Windows/Linux-specific DSN doesn't
+  translate cleanly into a portable Docker image — that's the whole reason v2
+  exists.
+- Queries in `customer.js`/`admin.js` build SQL via string interpolation
+  rather than parameterized queries. Fine for a learning sandbox; not
+  something to carry into production.
+- API keys are hardcoded in a few files for convenience during development —
+  rotate and externalize them before any public deployment.
+
+---
+
+## 👤 Author
+
+Selvaganapathi S
